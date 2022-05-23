@@ -1,2 +1,2 @@
-![Screenshot](VT Sender.png)
+![Screenshot](VTSender.png)
 
