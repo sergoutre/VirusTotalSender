@@ -16,6 +16,7 @@
 #include <nlohmann/json.hpp>
 
 #include <string>
+#include <filesystem>
 #include <map>
 #include <thread>
 #include <chrono>
@@ -28,6 +29,7 @@ using nlohmann::json;
 using VTSender::Config;
 using VTSender::Requests;
 using VTSender::VirusTotal;
+namespace fs = std::filesystem;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
@@ -72,7 +74,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	// Load config
 
-	Config config("config/VTSender.json");
+	Config config(fs::temp_directory_path().string() + "/VTSender.json");
 
 	json configData = config.load(
 	{
@@ -321,9 +323,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 						}
 						if (fileDialog.showFileDialog("Select file", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN))
 						{
-							ImGui::InsertNotification({ ImGuiToastType_Info, 5000, ("Selected path: " + fileDialog.selected_path).c_str() });
+							if ((fs::file_size(fileDialog.selected_path) / 1024 / 1024) > static_cast<int>(VirusTotal::File::MAX_SIZE))
+								ImGui::InsertNotification({ ImGuiToastType_Info, 3000, "A file exceeds the weight limit. Max file size - 32 MB" });
+							else
+							{
+								ImGui::InsertNotification({ ImGuiToastType_Info, 5000, ("Selected path: " + fileDialog.selected_path).c_str() });
+								filePath = fileDialog.selected_path;
+							}
 
-							filePath = fileDialog.selected_path;
 						}
 
 						ImGui::NextColumn();

@@ -16,6 +16,10 @@ namespace VTSender
 			BAD_REQUEST = 400,
 			FORBIDDEN = 403
 		};
+		enum class File
+		{
+			MAX_SIZE = 32
+		};
 
 		inline static const std::string apiUrl = "http://www.virustotal.com/vtapi/v2/";
 
