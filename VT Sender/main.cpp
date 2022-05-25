@@ -33,6 +33,8 @@ namespace fs = std::filesystem;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
+	if (hasLoaded()) return 1;
+
 	int dwWidth = GetSystemMetrics(SM_CXSCREEN) / 2; // The width of the screen
 	int dwHeight = GetSystemMetrics(SM_CYSCREEN) / 2; // The height of the screen
 
@@ -42,7 +44,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	RegisterClassEx(&wc);
 
 	HWND hwnd = CreateWindow(wc.lpszClassName, appName.c_str(), WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME,
-		dwWidth - (mainWindow["width"] / 2.0f), dwHeight - (mainWindow["height"] / 2.0f), mainWindow["width"], mainWindow["height"], 0, 0, wc.hInstance, 0);
+		dwWidth - static_cast<int>(mainWindow.at("width") / 2.0f), dwHeight - static_cast<int>(mainWindow.at("height") / 2.0f), static_cast<int>(mainWindow.at("width")), static_cast<int>(mainWindow.at("height")), 0, 0, wc.hInstance, 0);
 
 	// Initialize Direct3D
 
@@ -130,7 +132,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 						{
 							if (!ImGui::IsPopupOpen("##SettingsPopup"))
 							{
-								ImGui::SetNextWindowSize(ImVec2(popupWindow["width"], popupWindow["height"]));
+								ImGui::SetNextWindowSize(ImVec2(popupWindow.at("width"), popupWindow.at("height")));
 								ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 								ImGui::OpenPopup("##SettingsPopup");
 							}
@@ -142,8 +144,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 								ImGui::Text("Enter API key: "); ImGui::SameLine();
 								ImGui::InputText("##apiKey", VirusTotal::getApiKey()); ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
-								ImGui::SetCursorPosY(popupWindow["height"] - 50.0f);
-								if (ImGui::Button("Save", ImVec2(popupWindow["width"] / 2.0f - 12.0f, 30.0f)))
+								ImGui::SetCursorPosY(popupWindow.at("height") - 50.0f);
+								if (ImGui::Button("Save", ImVec2(popupWindow.at("width") / 2.0f - 12.0f, 30.0f)))
 								{
 									if (VirusTotal::getApiKey()->empty())
 										ImGui::InsertNotification({ ImGuiToastType_Error, 3000, "Api key is empty!" });
@@ -160,7 +162,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 									}
 								}
 								ImGui::SameLine();
-								if (ImGui::Button("Close", ImVec2(popupWindow["width"] / 2.0f - 12.0f, 30.0f)))
+								if (ImGui::Button("Close", ImVec2(popupWindow.at("width") / 2.0f - 12.0f, 30.0f)))
 								{
 									ImGui::CloseCurrentPopup();
 									showPopup = [&]() {};
@@ -229,18 +231,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 						{
 							if (avObj.contains("detected") && avObj.contains("result"))
 							{
+								static std::function<std::string(bool)> boolToStr = [](bool value) { return (value) ? "true" : "false"; };
+
 								ImGui::TableNextRow();
 
 								ImGui::TableSetColumnIndex(0);
 								ImGui::Text(avName.c_str());
 
 								ImGui::TableSetColumnIndex(1);
-								std::function<std::string(bool)> boolToStr = [](bool value) { return (value) ? "true" : "false"; };
 								ImGui::Text(boolToStr(avObj.at("detected").get<bool>()).c_str());
 
 								ImGui::TableSetColumnIndex(2);
 								if (!avObj.at("result").is_null())
-									ImGui::Text(avObj["result"].get<std::string>().c_str());
+									ImGui::Text(avObj.at("result").get<std::string>().c_str());
 								else
 									ImGui::Text("-");
 							}
@@ -353,7 +356,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				}
 				ImGui::EndChild();
 
-				ImGui::SetCursorPosY(mainWindow["height"] - 85.0f);
+				ImGui::SetCursorPosY(mainWindow.at("height") - 85.0f);
 				if (ImGui::Button("Send##scan", ImVec2(-0.1f, 30.0f)))
 				{
 					std::thread scanThread([&]() // thread for large files
