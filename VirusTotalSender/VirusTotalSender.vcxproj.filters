@@ -64,7 +64,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="VT Sender.rc">
+    <ResourceCompile Include="VirusTotalSender.rc">
       <Filter>Файлы ресурсов</Filter>
     </ResourceCompile>
   </ItemGroup>

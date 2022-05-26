@@ -183,7 +183,7 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="VT Sender.rc" />
+    <ResourceCompile Include="VirusTotalSender.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\icon.ico" />

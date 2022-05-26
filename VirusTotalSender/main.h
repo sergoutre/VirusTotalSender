@@ -20,7 +20,7 @@ LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pd3dDevice = NULL;
 D3DPRESENT_PARAMETERS g_d3dpp = { };
 
-std::string appName = "VT Sender";
+std::string appName = "VirusTotal Sender 1.0.0";
 std::map<std::string, float> mainWindow = { {"width", 800.0f}, {"height", 600.0f} };
 
 inline static std::string removeSpaces(std::string input)
