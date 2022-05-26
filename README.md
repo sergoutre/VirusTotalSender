@@ -12,7 +12,7 @@ Main Features
 
 Downloads
 ---
-Pre-compiled: https://github.com/TRYHARD01/VT-Sender/releases
+Pre-compiled: https://github.com/TRYHARD01/VirusTotalSender/releases
 
 Requirements
 ---
