@@ -20,4 +20,4 @@ Requirements
 
 Author
 ---
-- [TRYHARD01](https://github.com/sergoutre)
+- [sergoutre](https://github.com/sergoutre)
