@@ -5,14 +5,14 @@ using its API v2.
 
 Main Features
 ---
-- Get info about file by its hash (MD5, SHA-1, SHA-256) or scan id
-- Get info about url by its name or scan id
-- Select file to scan from "File menu"
-- Scan url
+- Get info about a file by its hash (MD5, SHA-1, SHA-256) or scan id
+- Get info about a url by its name or scan id
+- Select a file to scan from "File menu"
+- Scan a url
 
 Downloads
 ---
-Pre-compiled: https://github.com/TRYHARD01/VirusTotalSender/releases
+Pre-compiled: https://github.com/sergoutre/VirusTotalSender/releases
 
 Requirements
 ---
