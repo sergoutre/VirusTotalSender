@@ -1,7 +1,6 @@
 ![Screenshot](VirusTotalSender.png)
 
-VirusTotal Sender is a Windows desktop application that interacts with VirusTotal
-using its API v2.
+VirusTotal Sender is a Windows desktop application that interacts with VirusTotal API v2.
 
 Main Features
 ---
